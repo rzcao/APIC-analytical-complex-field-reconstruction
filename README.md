@@ -1,2 +1,2 @@
 # APICFigure
-Whole slide image using AMIIM
+Whole slide image using APIC
