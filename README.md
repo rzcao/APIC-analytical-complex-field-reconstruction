@@ -1,6 +1,7 @@
 # Angular Ptychograhic Imaging with Closed-form method
 This is the data for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive example of the reconstruction result can be found [here](https://rzcao.github.io/APIC_Results/).
 
+## Run the code with default settings
 To get started, simply replace the folder's name in the main code `APIC_reconstruction.m` using the name where the data is. Assume we want to reconstruct the thyroid sample which was imaged using a highly aberrated imaging system, which is inside a folder named "Data". Then, we modify the code as
 ``` matlab
 folderName = 'Data';
@@ -16,7 +17,7 @@ ROILength = 256;
 ```
 You can then run the code and see the reconstruction result using APIC.
 
-# Parameters
+## Parameters
 We note that parameter tunning is unnecessary as APIC is an analytical method. However, there are several options that you can choose in performing the reconstruction.
 ### Basic parameters 
 1. `matchingTol`: By default, the program automatically determines the NA-matching measurements according to the calibrated illumination NA (`na_calib`, a vector). `matchingTol` specifies the maximal absolute deviation allowed for a measurement to be considered as NA-matching measurement. The number of NA matching measurements found by the program will be displayed in MATLAB's command window. Consider to change this threshold if the number mismatches with your experiment.
@@ -68,4 +69,4 @@ One example of using these additional arguments is shown below
                                           'drift', true,'threshold', 0.3, 'intensity correction', true);
 ```
 
-# FAQs
+## FAQs
