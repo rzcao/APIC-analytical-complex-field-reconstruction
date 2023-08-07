@@ -83,4 +83,4 @@ One example of using these additional arguments is shown below
 
 3. How should I order my measurements?
 
-> Ordering is not necessary in APIC. It automatically sorts the measurements based on their illumination k-vector. However, one thing you need to check is that the number of NA-matching measurements found by the program matches your experiment. Check [basic parameter](#Basic-parameters) for more information.
+> Ordering is not necessary in APIC. It automatically sorts the measurements based on their illumination k-vector. However, one thing you need to check is that the number of NA-matching measurements found by the program matches your experiment. Check [basic parameter](#basic-parameters) for more information.
