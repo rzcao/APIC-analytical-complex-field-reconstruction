@@ -25,4 +25,5 @@ We note that parameter tunning is unnecessary as APIC is an analytical method. H
 4. `useAbeCorrection`: Whether to enable aberration correction. It is always recommended to set to `true`. We keep this parameter so that one can see the influence of the aberration if we do not take aberration into consideration.
 5. `paddingHighRes`: To generate a high-resolution image, upsampling is typically requried due to the requirement of Nyquist sampling. `paddingHighRes` tells the program the upsampling ratio.
 
-### Options for APIC's sub-functions
+### Important options for APIC's sub-functions
+##### Analytical complex field reconstruction using NA-matching measurements
