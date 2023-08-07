@@ -27,10 +27,11 @@ We note that parameter tunning is unnecessary as APIC is an analytical method. H
 
 ### Important options for APIC's sub-functions
 #### Analytical complex field reconstruction using NA-matching measurements
-Function `recFieldKK.m` is called to reconstruct the complex field reconstruction using NA-matching measurements. Required inputs for this function are the images and the illumination k-vectors (kx<sub>i</sub> ,ky<sub>i</sub>). When reconstructing multiple images, the first input should be a 3D matrix and the second input should be a 2D vector, and the last dimension of both demotes different measurements. Example with the minimal number of inputs:
+Function `recFieldKK.m` is called to reconstruct the complex field reconstruction using NA-matching measurements. Required inputs for this function are the images and the illumination k-vectors (kx<sub>i</sub> ,ky<sub>i</sub>). When reconstructing multiple images, the first input should be a 3D matrix and the second input should be a 2D vector. The last dimension of the images and the first dimension of the k-vectors denote different measurements. Example with the minimal number of inputs:
 ``` matlab
-im = measurement;
-k = [kx, ky]; % in pixels in the spatial frequency domain
+im = measurements; % When the size of the acquired image is N-by-N and we have 2 images, the size of im is N*N*2
+k = [kx_1, ky_1;
+     kx_2, ky_2]; % in pixels in the spatial frequency domain
 reconstructedField = recFieldKK(im, k);
 ```
 Two important optional arguments for the complex field reconstruction with NA-matching measurements are `CTF` and `norm`.
