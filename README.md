@@ -51,7 +51,7 @@ Function `findAbeFromKK.m` is used to extract the aberration of an imaging syste
 ```
 `'weighted'` can be used as an optional argument. When it is `true`, the program focuses more on places with larger weights and tends to ignore places with smaller weights, which is mainly designed to take signal-to-noise ratio (SNR) into consideration. When it is `false`, the function does not emphasize on any particular places and treats the small and large signals equally. It is set to `true` by default.
 
-After we obtain the aberration and the complex spectrums sampled under NA-matching angle illumination, the aberration of the reconstructed spectrums are corrected and then stitched. After stitching, we obtain `ftRecons` (Fourier transform of the reconstructed complex field) and `maskRecons` (mask where we put `true` in places that have been reconstructed).
+After we obtain the aberration and the complex spectrums sampled under NA-matching angle illumination, the aberration of the reconstructed spectrums is corrected and the corrected spectrums are then stitched. After stitching, we obtain `ftRecons` (Fourier transform of the reconstructed complex field) and `maskRecons` (mask where we put `true` in places that have been reconstructed).
 
 #### Field reconstruction with darkfield measurements
 Function `recFieldFromKnown.m` is used to do complex field reconstruction using darkfield measurements. Essentially, the sampled spectrum in one darkfield measurement is assumed to consist of two part: the known spectrum and the unkonwn spectrum. This function retrieves the unknown spectrum from the known spectrum. When the aberration of the system is extracted, we can use the following to call this function
@@ -59,9 +59,9 @@ Function `recFieldFromKnown.m` is used to do complex field reconstruction using 
 [ftRecons,maskRecons] = recFieldFromKnown(im_DF, k_DF, ftRecons, maskRecons, CTF_abe);
 ```
 Important optional arguments for this function are `'drift'`, `'threshold'`, and `'intensity correction'`.
-1. `'drift'`: Whether to consider calibration error in illumination angle. When set to `true`, this function provides more robust results. However, this leads to assuming a smaller known spectrum. This in turn would require a larger overlap ratio.
-2. `'threshold'`: When the overlap ratio of the data is large, we can use this argument to improve the SNR of the reconstruction. The program calculates the same spectrum multiple times using different measurements and then averages over these independent reconstructions. It is recommended to choose a threshold number in between `[0,0.4]`. A larger threshold number leads to longer reconstruction time.
-3. `'intensity correction'`: When set to `true`, the function automatically compensate for illumination intensity differences.
+1. `'drift'`: Whether to consider calibration error in illumination angle. When set to `true`, this function provides more robust results. However, this results in assuming a smaller known spectrum, which would in turn require a larger overlap ratio.
+2. `'threshold'`: When the overlap ratio of the data is large, we can use this argument to improve the SNR of the reconstruction. The program calculates the same spectrum multiple times using different measurements and then averages over these independent reconstructions. It is recommended to choose a threshold number in between `[0,0.4]`. A larger threshold number leads to a longer reconstruction time.
+3. `'intensity correction'`: When set to `true`, the function automatically compensates for illumination intensity differences.
 
 One example of using these additional arguments is shown below
 ``` matlab
@@ -70,3 +70,13 @@ One example of using these additional arguments is shown below
 ```
 
 ## FAQs
+1. How is the illumination k-vector defined?
+
+>In all of our functions, we assume the positive direction of `kx` is pointing down on a screen and the positive direction of `ky` is   pointing right. This is defined based on how the coordinates is define in `imagesc`, which is used to show an image in MATLAB.
+>
+>One important thing to note is that in our dataset, a different definition is used for the convenient of most FPM algorithms.
+
+
+2. What to do if the program tells me that 'the matrix is badly conditioned'?
+
+>It is likely to be that the program find the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling `recFieldFromKnown.m` when you aim to use a small dataset to do reconstruction. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
