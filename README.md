@@ -1,5 +1,5 @@
 # Angular Ptychograhic Imaging with Closed-form method
-This is the data for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here.
+This is the data for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive example of the reconstruction result can be found [here](https://rzcao.github.io/APIC_Results/).
 
 To get started, simply replace the folder's name in the main code `APIC_reconstruction.m` using the name where the data is. Assume we want to reconstruct the thyroid sample which was imaged using a highly aberrated imaging system, which is inside a folder named "Data". Then, we modify the code as
 ``` matlab
@@ -27,3 +27,16 @@ We note that parameter tunning is unnecessary as APIC is an analytical method. H
 
 ### Important options for APIC's sub-functions
 ##### Analytical complex field reconstruction using NA-matching measurements
+Function `recFieldKK.m` is called to reconstruct the complex field reconstruction using NA-matching measurements. Required inputs for this function are the images and the illumination k-vectors (kx<sub>i</sub> ,ky<sub>i</sub>). When reconstructing multiple images, the first input should be a 3D matrix and the second input should be a 2D vector, and the last dimension of both demotes different measurements. Example with the minimal number of inputs:
+``` matlab
+im = measurement;
+k = [kx, ky]; % in pixels in the spatial frequency domain
+reconstructedField = recFieldKK(im, k);
+```
+Two important optional arguments for the complex field reconstruction with NA-matching measurements are `CTF` and `norm`.
+1. `CTF`: Incorporate the (absolute) coherent transfer function for noise reduction. This will force the regions that are not covered by the CTF in reconstructed spectrum to be zero.
+2. `norm`: Whether to use normalization in the reconstruction. We assume that the amplitude of zero-frequency in the sample's spectrum does not change with repect to the tilted illumination. Thus, when `norm` is set to `true`, we force the zero-frequency component in reconstructed spectrums to have the same amplitude (This is essentially correcting for illumination intensity variation).
+Example of using this two optional arguments is shown below
+``` matlab
+reconstructedField = recFieldKK(im, k,'CTF', CTF, 'norm', true);
+```
