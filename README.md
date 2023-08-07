@@ -72,7 +72,7 @@ One example of using these additional arguments is shown below
 ## FAQs
 1. How is the illumination k-vector defined?
 
->In all of our functions, we assume the positive direction of `kx` is pointing down on a screen and the positive direction of `ky` is   pointing right. This is defined based on how the coordinates are define in `imagesc`, which is used to show an image in MATLAB.
+>In all of our functions, we assume the positive direction of `kx` is pointing down on a screen and the positive direction of `ky` is   pointing right. This is defined based on how the coordinates are define in `imagesc`, which is used to show an image in MATLAB. The normal illumination should have [0, 0] as its illumination k-vector. 
 >
 >One important thing to note is that in our dataset, a different definition is used for the convenient of most FPM algorithms.
 
