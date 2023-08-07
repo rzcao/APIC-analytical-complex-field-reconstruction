@@ -38,6 +38,7 @@ reconstructedField = recFieldKK(im, k);
 Two important optional arguments for `recFieldKK` are `'CTF'` and `'norm'`.
 1. `'CTF'`: Incorporate the (absolute) coherent transfer function for noise reduction. This will force the regions that are not covered by the CTF in reconstructed spectrum to be zero.
 2. `'norm'`: Whether to use normalization in the reconstruction. We assume that the amplitude of zero-frequency in the sample's spectrum does not change with repect to the tilted illumination. Thus, when `norm` is set to `true`, we force the zero-frequency component in reconstructed spectrums to have the same amplitude (This is essentially correcting for illumination intensity variation).
+
 Example of using this two optional arguments is shown below
 ``` matlab
 reconstructedField = recFieldKK(im, k,'CTF', CTF, 'norm', true);
@@ -60,6 +61,7 @@ Important optional arguments for this function are `'drift'`, `'threshold'`, and
 1. `'drift'`: Whether to consider calibration error in illumination angle. When set to `true`, this function provides more robust results. However, this leads to assuming a smaller known spectrum. This in turn would require a larger overlap ratio.
 2. `'threshold'`: When the overlap ratio of the data is large, we can use this argument to improve the SNR of the reconstruction. The program calculates the same spectrum multiple times using different measurements and then averages over these independent reconstructions. It is recommended to choose a threshold number in between `[0,0.4]`. A larger threshold number leads to longer reconstruction time.
 3. `'intensity correction'`: When set to `true`, the function automatically compensate for illumination intensity differences.
+
 One example of using these additional arguments is shown below
 ``` matlab
 [ftRecons,maskRecons] = recFieldFromKnown(im_DF, k_DF, ftRecons, maskRecons, CTF_abe, ...
