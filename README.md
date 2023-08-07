@@ -26,7 +26,7 @@ We note that parameter tunning is unnecessary as APIC is an analytical method. H
 5. `paddingHighRes`: To generate a high-resolution image, upsampling is typically requried due to the requirement of Nyquist sampling. `paddingHighRes` tells the program the upsampling ratio.
 
 ### Important options for APIC's sub-functions
-##### Analytical complex field reconstruction using NA-matching measurements
+#### Analytical complex field reconstruction using NA-matching measurements
 Function `recFieldKK.m` is called to reconstruct the complex field reconstruction using NA-matching measurements. Required inputs for this function are the images and the illumination k-vectors (kx<sub>i</sub> ,ky<sub>i</sub>). When reconstructing multiple images, the first input should be a 3D matrix and the second input should be a 2D vector, and the last dimension of both demotes different measurements. Example with the minimal number of inputs:
 ``` matlab
 im = measurement;
