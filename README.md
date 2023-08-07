@@ -72,11 +72,11 @@ One example of using these additional arguments is shown below
 ## FAQs
 1. How is the illumination k-vector defined?
 
->In all of our functions, we assume the positive direction of `kx` is pointing down on a screen and the positive direction of `ky` is   pointing right. This is defined based on how the coordinates is define in `imagesc`, which is used to show an image in MATLAB.
+>In all of our functions, we assume the positive direction of `kx` is pointing down on a screen and the positive direction of `ky` is   pointing right. This is defined based on how the coordinates are define in `imagesc`, which is used to show an image in MATLAB.
 >
 >One important thing to note is that in our dataset, a different definition is used for the convenient of most FPM algorithms.
 
 
 2. What to do if the program tells me that 'the matrix is badly conditioned'?
 
->It is likely to be that the program find the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling `recFieldFromKnown.m` when you aim to use a small dataset to do reconstruction. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
+>It is likely to happen when program finds the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling `recFieldFromKnown.m` when you aim to use a small dataset to do reconstruction. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
