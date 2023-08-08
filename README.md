@@ -6,10 +6,16 @@ To get started, simply replace the folder's name in the main code `APIC_reconstr
 ``` matlab
 folderName = 'reducedData';
 ```
-As there is only one file inside the `Data` folder whose name contains "HEpath", we can ask the program to find data with name "HEpath":
+As there is only one file inside the `reducedData` folder whose name contains "Thyroid", we can ask the program to find data with name "Thyroid":
 ``` matlab
-fileNameKeyword = 'HEpath';
+fileNameKeyword = 'Thyroid';
 ```
+If we want to reconstruct the Siemens star target at a defocus distance of 16, we can set `fileNameKeyword` to `'Siemens'`. However, we can find there are two files whose name contains this keyword. As a result, we can choose to specify the full name of the data or use an additional keyword. Here is an example of using an additional keyword:
+``` matlab
+fileNameKeyword   = 'Siemens';
+additionalKeyword = 'defocus16';
+```
+
 Let's say we want to reconstruct a patch with size length of 256 pixels, we set `useROI` to be `true` and let `ROILength` equals 256:
 ``` matlab
 useROI    = true;
