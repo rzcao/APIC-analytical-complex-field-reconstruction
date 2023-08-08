@@ -85,7 +85,7 @@ One example of using these additional arguments is shown below
 
 2. What to do if the program tells me that 'the matrix is close to singular'?
 
->It is likely to happen when program finds the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling [`recFieldFromKnown.m`](#field-reconstruction-with-darkfield-measurements) when you aim to use a small dataset to do reconstruction. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
+>It is likely to happen when program finds the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling [`recFieldFromKnown.m`](#field-reconstruction-with-darkfield-measurements) when you aim to use a small dataset to do reconstruction. When working with a small dataset whose overlap ratio is small, you may want to set `'drift'` to `false`. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
 
 3. How should I order my measurements?
 
