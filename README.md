@@ -83,7 +83,7 @@ One example of using these additional arguments is shown below
 >One important thing to note is that in our dataset, a different definition is used for the convenient of most FPM algorithms.
 
 
-2. What to do if the program tells me that 'the matrix is badly conditioned'?
+2. What to do if the program tells me that 'the matrix is close to singular'?
 
 >It is likely to happen when program finds the overlap ratio is insufficient for (at least one of) the darkfield measurements. Check if you have set `'drift'` to `true` when calling [`recFieldFromKnown.m`](#field-reconstruction-with-darkfield-measurements) when you aim to use a small dataset to do reconstruction. If you want to enable the `'drift'` option, consider to increase the overlap ratio by using more tilted illuminations.
 
