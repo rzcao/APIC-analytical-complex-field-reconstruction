@@ -12,7 +12,7 @@ As there is only one file inside the `reducedData` folder whose name contains "T
 ``` matlab
 fileNameKeyword = 'Thyroid';
 ```
-If we want to reconstruct the Siemens star target at a defocus distance of 16, we can set `fileNameKeyword` to `'Siemens'`. However, we can find there are two files whose name contains this keyword. As a result, we can choose to specify the full name of the data or use an additional keyword. Here is an example of using an additional keyword:
+If we want to reconstruct the Siemens star target at a defocus distance of 16 µm, we can set `fileNameKeyword` to `'Siemens'`. However, we can find there are two files whose name contains this keyword. As a result, we can choose to specify the full name of the data or use an additional keyword. Here is an example of using an additional keyword:
 ``` matlab
 fileNameKeyword   = 'Siemens';
 additionalKeyword = 'defocus16';
