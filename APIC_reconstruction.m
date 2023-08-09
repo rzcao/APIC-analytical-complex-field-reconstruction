@@ -9,7 +9,7 @@
 % The source code is licensed under GPL-3. (Due to conflict of interest of
 % our provisional patent, we will release the editable source code of the
 % aberration correction and the darkfield related complex field
-% reconstruction algorithm after Oct 20, 2023.)
+% reconstruction algorithm after Oct 30, 2023.)
 % 
 % By Ruizhi Cao, Biophotonics Lab, Caltech
 % Modified on Aug 7, 2023
