@@ -1,5 +1,5 @@
 # Angular Ptychograhic Imaging with Closed-form method
-This is a simple tutorial for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive images of the reconstruction results can be found [here](https://rzcao.github.io/APIC_Results/).
+This is a simple tutorial for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive images of a few reconstruction results can be found [here](https://rzcao.github.io/APIC_Results/).
 
 (Due to conflict of interest, we will release the editable source code of the aberration correction and the darkfield related complex field reconstruction algorithm after Oct 30, 2023)
 
