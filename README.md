@@ -3,8 +3,6 @@ This is a simple tutorial for Angular Ptychograhic Imaging with Closed-form meth
 
 The preprint of APIC can be found on [arXiv](https://doi.org/10.48550/arXiv.2309.00755).
 
-(Due to conflict of interest, we will release the editable source code of the aberration correction and the darkfield related complex field reconstruction algorithm after Oct 30, 2023)
-
 ## Run the code with default settings
 To get started, simply replace the folder's name in the main code `APIC_reconstruction.m` using the name where the data is. Assume we want to reconstruct the thyroid sample which was imaged using a highly aberrated imaging system, which is inside a folder named "reducedData". Then, we modify the code as
 ``` matlab
@@ -84,7 +82,7 @@ One example of using these additional arguments is shown below
 
 >In all of our functions, we assume the positive direction of `kx` points down on a screen and the positive direction of `ky` points right. This is defined based on how the coordinates are define in `imagesc`, which is used to show an image in MATLAB. The normal illumination should have [0, 0] as its illumination k-vector. 
 >
->One important thing to note is that in our dataset, a different definition is used for the convenient of most FPM algorithms.
+>One important thing to note is that in our dataset, a different definition is used for the convenience of most FPM algorithms.
 
 
 2. What to do if the program tells me that 'the matrix is close to singular'?
