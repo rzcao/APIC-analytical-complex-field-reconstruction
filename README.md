@@ -82,7 +82,7 @@ One example of using these additional arguments is shown below
 
 >In all of our functions, we assume the positive direction of `kx` points down on a screen and the positive direction of `ky` points right. This is defined based on how the coordinates are define in `imagesc`, which is used to show an image in MATLAB. The normal illumination should have [0, 0] as its illumination k-vector. 
 >
->One important thing to note is that in our dataset, a different definition is used for the convenience of most FPM algorithms.
+>One important thing to note is that in our dataset a different definition is used for the convenience of most FPM algorithms.
 
 
 2. What to do if the program tells me that 'the matrix is close to singular'?
