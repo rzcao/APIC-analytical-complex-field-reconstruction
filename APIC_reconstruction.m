@@ -6,13 +6,10 @@
 % A tutorial of this code and the dataset can be found at:
 % https://github.com/rzcao/APIC-analytical-complex-field-reconstruction
 %
-% The source code is licensed under GPL-3. (Due to conflict of interest of
-% our provisional patent, we will release the editable source code of the
-% aberration correction and the darkfield related complex field
-% reconstruction algorithm after Oct 30, 2023.)
+% The source code is licensed under GPL-3. 
 % 
 % By Ruizhi Cao, Biophotonics Lab, Caltech
-% Modified on Aug 7, 2023
+% Modified on Oct 13, 2023
 
 %% check dependancies 
 if ~any(any(contains(struct2cell(ver), 'Image Processing Toolbox')))
@@ -28,11 +25,12 @@ enableROI           = true;     % whether to use ROI in the reconstruction, this
 ROILength           = 256;      % define the ROI of the reconstruction
 ROIcenter           = 'auto';   % define the center of ROI. Example: ROIcenter = [256,256]; ROIcenter = 'auto';
 paddingHighRes      = 3;        % define the upsampling ratio for the final high-res image
+visualizeSumIm      = true;     % whether to visualize the sum of all measurements for comparison
 visualizeNAmatchingMeas = false; % whether to visualize the result using only NA-matching meaurements
 %% load data
 folderName      = 'reducedData'; % note this is case sensitive
 fileNameKeyword = 'Siemens';     % e.g.: Siemens HEpath Thyroid
-additionalKeyword = 'defocus0';  % this is only needed when there are multiple files contain the keyword in the above line
+additionalKeyword = 'defocus0';  % this is only needed when there are multiple files containing the keyword in the above line
 
 temp = dir(folderName);
 if isempty(temp)
@@ -63,11 +61,17 @@ if ROILength>xsize || ROILength>ysize
     error(['ROI length cannot exceed ',num2str(min(xsize,ysize))]);
 end
 
+if ~enableROI && xsize ~= ysize
+    clear xCropPad yCropPad;
+    [I_low,xsize,ysize,xc,yc,freqXY_calib,xCropPad,yCropPad] = padImageToSquare_APIC(I_low,xsize,ysize,xc,yc,freqXY_calib,na_calib);
+end
+
 % Get the calibrated illumination angles for NA-matching measurements
 x_illumination = freqXY_calib(slt_idx,2); % note the second column is assigned to x. 
 y_illunimation = freqXY_calib(slt_idx,1); % note the first column is assigned to y.
-NA_pixel = na_rp_cal; % calibrated maximum spatial freq in FT space
+NA_pixel = max(na_rp_cal); % calibrated maximum spatial freq in FT space
 disp(['Number of NA-matching measurments found: ',num2str(nNAmatching)]);
+
 %% select dark field measurement
 NA_diff = abs(na_calib(:,1)+1i*na_calib(:,2)) - 0.008 - na_cal;
 slt_idxDF = find(NA_diff>0)';
@@ -83,7 +87,6 @@ if enableROI
     x_illumination = x_illumination*ROILength/xsize;
     y_illunimation = y_illunimation*ROILength/ysize;
     NA_pixel = NA_pixel*ROILength/xsize;
-    na_rp_cal = na_rp_cal*ROILength/xsize;
     
     if isnumeric(ROIcenter)
         bdROI = calBoundary(ROIcenter,ROILength); 
@@ -100,14 +103,19 @@ if enableROI
 else
     bdROI = [1,1;xsize,ysize]; % by default, use the maximum ROI
 end
-I_kohler = sum(I_low(bdROI(1):bdROI(2),bdROI(3):bdROI(4),:),3);
-I = I_low(bdROI(1):bdROI(2),bdROI(3):bdROI(4),[slt_idx,slt_idxDF]);
 
+clear I_sum
+if visualizeSumIm
+    I_sum = sum(I_low(bdROI(1):bdROI(2),bdROI(3):bdROI(4),:),3);
+end
+
+I = I_low(bdROI(1):bdROI(2),bdROI(3):bdROI(4),[slt_idx,slt_idxDF]);
 clear I_low
+
 %% preparing for reconstruction
 imStack = zeros(size(I)); % allocate space for the filtered measurement.
-                          % It is ordered based on the associated angles of
-                          % each measurements. The first nNAmatching images
+                          % It is ordered based on the associated angle of
+                          % each measurement. The first nNAmatching images
                           % are the NA-matching measurements.
 
 % order measurement under NA-matching angle illumination
@@ -134,7 +142,7 @@ yc = floor(ysize/2+1);
 R = abs(X-xc + 1i*(Y-yc));
 
 % calculate maximum spatial frequency based on the measurement.
-pupilRadius = max([na_rp_cal, max(pupilR), vecnorm(fix([x_illumination(1:nNAmatching),y_illunimation(1:nNAmatching)]).')]);
+pupilRadius = max([NA_pixel, max(pupilR), vecnorm(fix([x_illumination(1:nNAmatching),y_illunimation(1:nNAmatching)]).')]);
 
 CTF = imresize(double(R_enlarge<pupilRadius*enlargeF),[xsize,ysize],'bilinear');
 CTF = max(circshift(rot90(CTF,2),[mod(xsize,2),mod(ysize,2)]),CTF);
@@ -181,7 +189,7 @@ clear YR XR;
 %% field reconstruction of NA-matching angle measurements and aberration extraction
 timerAPIC = tic;
 [recFTframe,mask2use] = recFieldKK(imStack(:,:,1:nNAmatching),k_illu(1:nNAmatching,:),...
-    'CTF',CTF,'pad',4,'norm',true,'wiener',false); % recFTframe: reconstructed field of NA-matching measurements
+    'CTF',CTF,'pad',4,'norm',true,'wiener',false); % recFTframe: reconstructed complex spectrums of NA-matching measurements
 
 
 [CTF_abe,zernikeCoeff] = findAbeFromOverlap(recFTframe,k_illu(1:nNAmatching,:),CTF,'weighted',true);%  find aberration 
@@ -192,7 +200,7 @@ figure;imagesc(angle(CTF_abe.*(abs(CTF_abe)>10^-3)));axis off;axis image;
 title('Reconstructed pupil, APIC');caxis([-pi pi]);colorbar;colormap(cmapAberration);
 
 
-% correct and stitch the reconstructed spectrums using NA-matching angle measurements
+% correct and stitch the reconstructed spectrums using NA-matching measurements
 bd = calBoundary([xcR,ycR],[xsize,ysize]);
 normMask = zeros(size(maskRecons));
 maskRecons(xcR,ycR) = 1;
@@ -232,12 +240,17 @@ ftRecons = fftshift(fft2(himMatching));
 if visualizeNAmatchingMeas
     cmapPhase = cDivVlag; % load colormap for phase
     figure('position',[35,5,1280,560]);
-    subplot(121),imagesc(abs(himMatching));caxis([0 inf]);colorbar;colormap(gca,'gray');
-    axis image;axis off;
+    if ~exist('xCropPad','var')
+        bdDisp = [1,imsizeRecons,1,imsizeRecons];
+    else
+        bdDisp = [1,xCropPad*paddingHighRes,1,yCropPad*paddingHighRes];
+    end
+    subplot(121),imagesc(abs(himMatching(bdDisp(1):bdDisp(2),bdDisp(3):bdDisp(4))));
+    caxis([0 inf]);colorbar;colormap(gca,'gray');axis image;axis off;
     title('Amplitude, using NA-matching angle measurements, aberration corrected');
-    subplot(122),imagesc(angle(himMatching));axis image;axis off;
+    subplot(122),imagesc(angle(himMatching(bdDisp(1):bdDisp(2),bdDisp(3):bdDisp(4))));
+    axis image;axis off;colormap(gca,cmapPhase);colorbar;caxis([-pi pi]);
     title('Phase, using NA-matching angle measurements, aberration corrected');
-    colormap(gca,cmapPhase);colorbar;caxis([-pi pi]);
 end
 %% reconstruction using dark field measurements
 if ~useAbeCorrection
@@ -253,30 +266,36 @@ himAPIC = ifft2(ifftshift(ftRecons)); % high-resolution image of APIC
 runtimeAPIC = toc(timerAPIC); % reconstruction time using APIC
 
 %% visualization of full reconstruction of APIC
+% Note: some parameters are recalculated so that this visualizaiton works when one loads pervious result directly.
 imsizeRecons = size(himAPIC,1); % size of the final reconstruction
 [xsize,ysize] = size(edgeMask);
 [~,edgePixel] = max(edgeMask(floor(xsize/2+1),:));
 
 edgePixeltemp = round(edgePixel/2);
-bdDisp = [edgePixeltemp*imsizeRecons/xsize,imsizeRecons - edgePixeltemp*imsizeRecons/xsize+1]; % coordinates for display purpose
+temp = edgePixeltemp*imsizeRecons/xsize;
+bdDisp = [temp, imsizeRecons-temp+1, temp, imsizeRecons-temp+1]; % coordinates for display purpose
+
+if exist('xCropPad','var')
+    bdDisp(2) = min(bdDisp(2) - (xsize-xCropPad)*paddingHighRes + (xsize-xCropPad ~= 0)*(temp-1), bdDisp(2));
+    bdDisp(4) = min(bdDisp(4) - (ysize-yCropPad)*paddingHighRes + (ysize-yCropPad ~= 0)*(temp-1), bdDisp(4));
+end
 
 cmapPhase = cDivVlag; % load colormap for phase
 figure('position',[35,5,1280,560]);
-subplot(121),imagesc(abs(himAPIC(bdDisp(1):bdDisp(2),bdDisp(1):bdDisp(2))));colorbar;
+subplot(121),imagesc(abs(himAPIC(bdDisp(1):bdDisp(2),bdDisp(3):bdDisp(4))));colorbar;
 caxis([0 inf]);axis image;axis off;colormap(gca,'gray');
-title('Amplitude, APIC, w/ aberration correction');
-subplot(122),imagesc(angle(himAPIC(bdDisp(1):bdDisp(2),bdDisp(1):bdDisp(2))));
+title('Amplitude, APIC');
+subplot(122),imagesc(angle(himAPIC(bdDisp(1):bdDisp(2),bdDisp(3):bdDisp(4))));
 axis image;axis off;colormap(gca,cmapPhase);colorbar;caxis([-pi pi]);
-title('Phase, APIC, w/ aberration correction');
+title('Phase, APIC');
 
-if exist('I_kohler','var') && any(size(I_kohler) ~= size(himAPIC))
-    I_kohler = imresize(I_kohler,size(himAPIC));
+if exist('I_sum','var') && any(size(I_sum) ~= size(himAPIC))
+    I_sum = imresize(I_sum,size(himAPIC));
+    amp_sum = sqrt(I_sum);
+    figure;imagesc(amp_sum(bdDisp(1):bdDisp(2),bdDisp(3):bdDisp(4)));colorbar;
+    axis image;axis off;
+    caxis([0 inf]);colormap('gray');title('Amplitude, sum of all measurements');
 end
-
-amp_kohler = sqrt(I_kohler);
-figure;imagesc(amp_kohler(bdDisp(1):bdDisp(2),bdDisp(1):bdDisp(2)));colorbar;
-axis image;axis off;
-caxis([0 inf]);colormap('gray');title('Amplitude, Kohler illumination');
 
 %% save result
 if saveResult
@@ -284,7 +303,12 @@ if saveResult
     [~,name2use,~] = fileparts(fileName);
     saveDir = 'Results';
     if ~exist(saveDir, 'dir')
-       mkdir(saveDir)
+       mkdir(saveDir);
     end
-    save([saveDir filesep name2use '_APIC_',num2str(ROILength),'.mat'],'himMatching','himAPIC','CTF_abe','edgeMask','edgePixel','zernikeCoeff');
+    
+    if ~exist('xCropPad','var')
+        save([saveDir filesep name2use '_APIC_',num2str(ROILength),'.mat'],'himMatching','himAPIC','CTF_abe','edgeMask','edgePixel','zernikeCoeff');
+    else
+        save(['Results' filesep name2use '_APIC_',num2str(ROILength),'.mat'],'himMatching','himAPIC','CTF_abe','edgeMask','edgePixel','zernikeCoeff','xCropPad','yCropPad');
+    end
 end
