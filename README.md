@@ -18,7 +18,7 @@ fileNameKeyword   = 'Siemens';
 additionalKeyword = 'defocus16';
 ```
 
-Let's say we want to reconstruct a patch with size length of 256 pixels, we set `useROI` to be `true` and let `ROILength` equals 256:
+Let's say we want to reconstruct a patch with size length of 256 pixels, we set `useROI` to be `true` and let `ROILength` equal 256:
 ``` matlab
 useROI    = true;
 ROILength = 256;
@@ -48,7 +48,7 @@ Two important optional arguments for `recFieldKK` are `'CTF'` and `'norm'`.
 1. `'CTF'`: Incorporate (the absolute value of) the coherent transfer function for noise reduction. This will force the regions that are not covered by the CTF in reconstructed spectrum to be zero.
 2. `'norm'`: Whether to use normalization in the reconstruction. We assume that the amplitude of zero-frequency in the sample's spectrum does not change with repect to the tilted illumination. Thus, when `norm` is set to `true`, we force the zero-frequency component in reconstructed spectrums to have the same amplitude (This is essentially correcting for illumination intensity variation).
 
-Example of using this two optional arguments is shown below
+An example of using this two optional arguments is shown below
 ``` matlab
 reconstructedFTField = recFieldKK(im, k,'CTF', CTF, 'norm', true);
 ```
@@ -62,7 +62,7 @@ Function `findAbeFromOverlap.m` is used to extract the aberration of an imaging 
 After we obtain the aberration and the complex spectrums sampled under NA-matching angle illumination, the aberration of the reconstructed spectrums is corrected and the corrected spectrums are then stitched. After stitching, we obtain `ftRecons` (Fourier transform of the reconstructed complex field) and `maskRecons` (mask where we put `true` in places that have been reconstructed).
 
 #### Field reconstruction with darkfield measurements
-Function `recFieldFromKnown.m` is used to do complex field reconstruction using darkfield measurements. Essentially, the sampled spectrum in one darkfield measurement is assumed to consist of two part: the known spectrum and the unknown spectrum. This function retrieves the unknown spectrum from the known spectrum. When the aberration of the system is extracted, we can use the following to call this function
+Function `recFieldFromKnown.m` is used to do complex field reconstruction using darkfield measurements. Essentially, the sampled spectrum in one darkfield measurement is assumed to consist of two part: the known spectrum (previously reconstructed) and the unknown spectrum. This function retrieves the unknown spectrum from the known spectrum. When the aberration of the system is extracted, we can use the following to call this function
 ``` matlab
 [ftRecons,maskRecons] = recFieldFromKnown(im_DF, k_DF, ftRecons, maskRecons, CTF_abe);
 ```
