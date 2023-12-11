@@ -18,7 +18,7 @@ function [ftRecons,maskRecons] = recFieldFromKnown(imStack,kIllu,ftRecons,maskRe
 %                       final spectrum in a later time. The final spectrum 
 %                       is expanded immediately when the unkonwn spectrum 
 %                       is larger than this ratio.
-%           5. conserve energy: treat the amplitude of the measured data at
+%           5. conserve energy: treat the amplitude of the measured data as
 %                               the ground truth.
 %           6. timer on: calculate the remaining time to finish.
 %
