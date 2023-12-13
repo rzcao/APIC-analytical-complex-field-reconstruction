@@ -1,5 +1,5 @@
-# Angular Ptychograhic Imaging with Closed-form method
-This is a simple tutorial for Angular Ptychograhic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive images of a few reconstruction results can be found [here](https://rzcao.github.io/APIC_Results/).
+# Angular Ptychographic Imaging with Closed-form method
+This is a simple tutorial for Angular Ptychographic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive images of a few reconstruction results can be found [here](https://rzcao.github.io/APIC_Results/).
 
 The preprint of APIC can be found on [arXiv](https://doi.org/10.48550/arXiv.2309.00755).
 
