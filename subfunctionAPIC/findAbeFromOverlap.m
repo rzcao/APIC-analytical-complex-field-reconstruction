@@ -203,7 +203,7 @@ end
 
 Hoffset = zeros(sum(numPhaseMeas),nZernike); % operator that calculates the offset
 % Note: Hoffset is basically D^0_{il} in our derivation
-for idx = 1:length(useimg)
+for idx = 1:length(numPhaseMeas)
     idxSt = 1+sum(numPhaseMeas(1:idx-1));
     Hoffset(idxSt:idxSt+numPhaseMeas(idx)-1,:) = repmat(Hz(offsetIdx(idx,1),:) - Hz(offsetIdx(idx,2),:),[numPhaseMeas(idx),1]);
 end
