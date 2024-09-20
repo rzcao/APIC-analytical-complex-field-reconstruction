@@ -232,7 +232,7 @@ clear Hdiff Hoffset;
 sigOffset = zeros(length(useimg),1);
 blockLL = zeros(length(useimg),nZernike);
 weightsVctSq = weightsVct.^2; % squared weights
-weightsSqSum = ones(length(useimg),1);
+weightsSqSum = numPhaseMeas(:);
 for idx = 1:length(useimg)
     idxSt = 1+sum(numPhaseMeas(1:idx-1));
     
