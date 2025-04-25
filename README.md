@@ -3,6 +3,8 @@ This is a simple tutorial for Angular Ptychographic Imaging with Closed-form met
 
 The principle and results of APIC can be found via this [link](https://www.nature.com/articles/s41467-024-49126-y) or on [arXiv](https://doi.org/10.48550/arXiv.2309.00755).
 
+A 3D generalization of APIC is on [arXiv](http://arxiv.org/abs/2504.16247) as well.
+
 ## Run the code with default settings
 To get started, simply replace the folder's name in the main code `APIC_reconstruction.m` using the name where the data is. Assume we want to reconstruct the thyroid sample which was imaged using a highly aberrated imaging system, which is inside a folder named "reducedData". Then, we modify the code as
 ``` matlab
