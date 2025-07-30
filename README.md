@@ -1,9 +1,7 @@
 # Angular Ptychographic Imaging with Closed-form method
 This is a simple tutorial for Angular Ptychographic Imaging with Closed-form method (APIC). We provide an example for performing reconstruction using the data included here. Interactive images of a few reconstruction results can be found [here](https://rzcao.github.io/APIC_Results/).
 
-The principle and results of APIC can be found via this [link](https://www.nature.com/articles/s41467-024-49126-y) or on [arXiv](https://doi.org/10.48550/arXiv.2309.00755).
-
-A python realization of APIC is available [here](https://github.com/Magishe/WSI-APIC).
+The principle and results of APIC can be found via this [link](https://www.nature.com/articles/s41467-024-49126-y) or on [arXiv](https://doi.org/10.48550/arXiv.2309.00755). APIC's python realization is available [here](https://github.com/Magishe/WSI-APIC).
 
 A 3D generalization of APIC is on [arXiv](http://arxiv.org/abs/2504.16247) as well.
 
