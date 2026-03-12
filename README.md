@@ -94,3 +94,7 @@ One example of using these additional arguments is shown below
 3. How should I order my measurements?
 
 > Ordering is not necessary in APIC. APIC automatically sorts the measurements based on their illumination k-vectors. However, one thing you need to check is that the number of NA-matching measurements found by the program matches your experiment. Check [basic parameter](#basic-parameters) for more information if the numbers do not match.
+
+4. What do the variables mean in the provided dataset?
+
+>  In the provided dataset, pixel size of the camera `dpix_c` (in microns), illumination wavelength `lambda` (in microns), the magnification `mag` and NA `na_cal` of the objective were given. The illumination k-vectors were specified by both `freqXY_calib` (in pixels in the spatial frequency domain) and the illumination NA vector `na_calib` (unitless and its direction follows the rule mentioned above). They are in one-to-one correspondance and the only difference is that they were given in two different units. Similarly, `na_rp_cal` is the radius (in pixels) of the NA-limited CTF in the spatial frequency domain and can be calculated from `na_cal` with the imaging system parameters.
